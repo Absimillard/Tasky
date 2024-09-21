@@ -1,0 +1,252 @@
+Implementing a notification system within your app can be done in several ways, depending on your specific requirements and the technologies you are using. Here are some general steps you can follow to implement a notification system:
+
+1. **Define Notification Types**: 
+  => Admin :
+    - NewUser (+num icon, color: green ) - bottom right
+    - Update on a user profile (↑num icon, color: green ) - bottom left
+
+    - NewProject (+num icon, color: red ) - bottom right
+    - Update in project where the user is invovled (↑num icon, color: red ) - bottom left
+    - Project new message (@num icon, color: red )
+    
+    - Private message recieved (@num icon, color: blue )
+  => User :
+    - Update in project where the user is invovled (↑num icon, color: red )
+    - Project new message (@num icon, color: red )
+
+    - Private message recieved (@num icon, color: blue )
+
+
+
+
+This might include a notification icon or badge, a list of notifications, and a way for users to view and dismiss notifications.
+    Notification menu : 
+        - List of notification item that contains notification info, timestamp, button for 'mark as read', link to the content related to the notification
+        - Tab button to expand the menu
+        - Config button to update the user notification settings 
+
+
+
+3. **Store Notification Data**: Decide how you will store notification data in your app. 
+This might include a database table or collection to store notification records, along with metadata such as the notification type, content, timestamp and duration.
+
+
+
+4. **Generate Notifications**: Implement the logic for generating notifications in your app. 
+This might involve triggering notifications based on certain events or conditions, such as when a new message is received or when a user's profile is updated.
+
+
+
+5. **Display Notifications**: Implement the logic for displaying notifications in your app. 
+This might involve updating the notification icon or badge to indicate that new notifications are available, 
+and displaying a list of notifications that users can view and interact with.
+
+
+
+6. **Handle Notification Actions**: Implement the logic for handling notification actions in your app. 
+This might involve allowing users to dismiss notifications, mark notifications as read, or take other actions in response to notifications.
+
+7. **Test Notification System**: Test your notification system to ensure that notifications are generated and displayed correctly, 
+and that users can interact with notifications as expected.
+
+
+
+8. **Monitor Notification System**: Monitor your notification system to ensure that it is functioning correctly and to identify any issues or areas for improvement.
+
+
+
+9. **Update Notification System**: Update your notification system as needed to add new features, fix bugs, or address user feedback.
+
+
+
+10. **Document Notification System**: Document your notification system to provide guidance for developers and to help with troubleshooting and maintenance.
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+The steps are generally in the right order, but there might be some slight adjustments needed for a more cohesive development process. Here's a reordered version for better flow:
+
+1. **Notification Types and sub-types**: 
+  => Admin :
+    - NewUser (+num icon, color: green ) - bottom right
+    - Update on a user profile (↑num icon, color: green ) - bottom left
+
+    - NewProject (+num icon, color: red ) - bottom right
+    - Update in project where the user is invovled (↑num icon, color: red ) - bottom left
+    - Project new message (@num icon, color: red )
+    
+    - Private message recieved (@num icon, color: blue )
+  
+  => User :
+    - Update in project where the user is invovled (↑num icon, color: red )
+    - Project new message (@num icon, color: red )
+
+    - Private message recieved (@num icon, color: blue )
+  
+  => Notification Prioritization: 
+  Some notifications may be more important or urgent than others. 
+  Think about how you'll prioritize notifications to ensure users see the most critical information first.
+
+2. **Channel Management**:
+      
+         User: This channel will cover notifications related to CRUD operations (Create, Update, Delete) on projects.
+         Admin: Notifications related to user management operations.
+         System: A channel for system-wide notifications.
+
+      Access Control:
+
+         Admin Users: Have access to all channels.
+         Simple Users: Have access only to the User and System channels. 
+
+      Sub-channels : 
+
+         Admin : 
+            user
+            project   
+         
+         User : 
+            project
+
+3. **State Management**:
+         Two Notification Sub-Pools:
+
+            totalNotif: Contains notifications from the user's notification array. 
+               These notifications are rendered in the notification history.
+               
+            activNotif: Contains notifications that are either marked as read and not dismissed, or not marked as read and not dismissed. 
+               These notifications are rendered in the notification menu list.
+
+         Define Actions:
+            ADD_NOTIFICATION
+            REMOVE_NOTIFICATION
+            UPDATE_NOTIFICATION
+
+         Create Reducers:
+            Write reducers to handle each action type.
+            Define the initial state for your notifications, typically an empty array or an object.
+            Implement logic in reducers to update the state based on the dispatched actions.
+
+         Connect Components:
+            Connect your components to the Redux store using connect or hooks like useSelector and useDispatch from react-redux.
+            Use selectors to retrieve notification state from the store and dispatch actions to modify the state.
+
+         Dispatch Actions:
+            Dispatch actions from your components or middleware in response to user interactions or asynchronous events.
+            For example, dispatch an action to add a new notification when a user performs a certain action in your application.
+
+         Handle Asynchronous Operations (Optional):
+            required !
+
+         Display Notifications:
+            Create components to render notifications based on the state managed by Redux.
+            Use selectors to retrieve notification data from the Redux store and pass it as props to notification components.
+
+         Update UI in Response to State Changes:
+            Ensure that your UI updates appropriately when the notification state changes.
+            Use React's component lifecycle methods, hooks, or libraries like react-redux's useSelector hook to re-render components when the notification state is updated.
+
+4. **Notification Item**:
+         Type: The type of notification, which determines its color. This references the notification types defined in the first step.
+
+      Content:
+         Related ID: Identifier of the related entity (e.g., project ID, user ID).
+         Message: The content of the notification.
+
+      Actions:
+         Go to: Action to navigate to the relevant page or component associated with the notification.
+         Mark as Read: Action to mark the notification as read.
+         Dismiss: Action to dismiss or remove the notification from the notification list.
+
+      Timestamp: The time since the notification was emitted, providing information on when the notification occurred.
+
+5. **Notification Container**:
+         Notification Menu:
+
+            List of Notification Items: Contains a list of notification items, each following the structure defined in step 4.
+            Tab Button: Allows users to expand the menu and access their notification history.
+            Config Button: Provides users with the ability to update their notification settings.
+
+         Notification Popup:
+
+            Toast Prompt: A short-lived popup that displays new notification items as they arrive.
+
+         Notification Badges:
+
+            Located on User Avatar: Badges indicating the number of unread notifications are positioned on the user's avatar, as specified in step 1.
+
+6. **Adding Notifications**:
+   
+
+7. **Removing Notifications**:
+   
+
+8. **Rendering Notifications**:
+
+9. **Styling and Animation**:
+   - Apply CSS styles to customize the appearance of notifications.
+   - Consider adding animations for notification entry, exit, and transitions to enhance the user experience.
+
+10. **Testing**:
+    - Test the notification system thoroughly to ensure it works as expected in various scenarios.
+    - Check for edge cases, such as displaying multiple notifications simultaneously or handling long messages.
+
+11. **Integration**:
+    - Integrate the notification system into your React application.
+    - Replace any existing notification mechanisms with the new system.
+
+12. **Documentation and Maintenance**:
+    - Document how to use the notification system for future reference.
+    - Update and maintain the notification system as needed based on changes in requirements or updates to React and its ecosystem.
+
+This reordered list ensures a smoother development process by first establishing foundational aspects like state and channel management before moving on to components and functionality.
+
+
+
+
+
+ Administrative Notifications
+        Purpose: Notify users of administrative actions taken within the system.
+        Examples:
+            Account suspension or reinstatement.
+            Role or permission changes.
+            Administrative actions on user accounts.
+
+    
+
+
+
+----- Essential System Notification Types -----
+
+    System Alerts
+        Purpose: Notify users of critical system events, such as outages, maintenance, or security breaches.
+        Examples:
+            Scheduled system maintenance.
+            System outages or downtimes.
+            Security breaches or vulnerabilities.
+
+    Operational Updates
+        Purpose: Inform users of changes or updates to system operations that affect their use of the service.
+        Examples:
+            Changes in system features or functionality.
+            Updates to system policies or terms of service.
+            Upgrades or patches applied to the system.
+
+   Transactional Notifications
+        Purpose: Inform users of transactions or actions that have taken place within the system.
+        Examples:
+            Successful or failed transactions.
+            Changes in account status or settings.
+            Alerts for actions that require user confirmation.
+
+    Error and Issue Notifications
+        Purpose: Alert users to issues or errors encountered within the system.
+        Examples:
+            Errors or issues during user actions (e.g., failed login attempts).
+            System errors or unexpected behavior.
+            Alerts about issues that need user attention.
+
+    Feature Announcements
+        Purpose: Announce new features or updates to existing features within the system.
+        Examples:
+            Introduction of new functionality.
+            Enhancements to existing features.
+            Removal or deprecation of features.
